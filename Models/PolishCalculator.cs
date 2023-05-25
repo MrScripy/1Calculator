@@ -52,6 +52,8 @@ namespace Calculator.Models
                 case '*':
                     return firstNum * secondNum;
                 case '/':
+                    if (secondNum.Equals(0))
+                        throw new Exception("Division by zero is not possible");
                     return firstNum / secondNum;
                 case '^':
                     return Math.Pow(firstNum, secondNum);

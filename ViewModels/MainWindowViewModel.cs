@@ -1,7 +1,9 @@
-﻿using Calculator.Infrastructure.Commands;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
+using Calculator.Infrastructure.Commands;
 using Calculator.Models;
 using Calculator.ViewModels.Base;
-using System.Windows.Input;
 
 namespace Calculator.ViewModels
 {
@@ -32,8 +34,17 @@ namespace Calculator.ViewModels
         private void OnCountCommandExecuted(object p)
         {
             string? infixExp = p as string;
-            PosfixExpr = ExpressionConverter.ConvertToPostfix(infixExp);
-            ResultExpr = PolishCalculator.Calculate(PosfixExpr).ToString();
+            try
+            {
+                PosfixExpr = Models.ExpressionConverter.ConvertToPostfix(infixExp);
+                ResultExpr = PolishCalculator.Calculate(PosfixExpr).ToString();
+            }
+            catch (Exception ex)
+            {
+                PosfixExpr = " ";
+                MessageBox.Show(ex.Message, "caption", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private bool CanCountCommandExecute(object p)
@@ -47,7 +58,7 @@ namespace Calculator.ViewModels
 
         public MainWindowViewModel()
         {
-            CountCommand = new LambdaCommand(OnCountCommandExecuted, CanCountCommandExecute);            
+            CountCommand = new LambdaCommand(OnCountCommandExecuted, CanCountCommandExecute);
         }
     }
 }

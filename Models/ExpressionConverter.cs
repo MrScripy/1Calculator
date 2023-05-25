@@ -49,6 +49,7 @@ namespace Calculator.Models
                         postfixExpr += operatorsStack.Pop();
                     operatorsStack.Push(operationChar);
                 }
+
             }
             foreach (char op in operatorsStack)
                 postfixExpr += op;
