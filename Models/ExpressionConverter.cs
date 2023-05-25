@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Calculator.Models
 {
-    class ExpressionConverter
+    internal static class ExpressionConverter
     {
-        private Dictionary<char, int> operationPriority = new() {
+        public static readonly Dictionary<char, int> OperationPriority = new() {
         {'(', 0},
         {'+', 1},
         {'-', 1},
@@ -16,7 +16,7 @@ namespace Calculator.Models
         {'~', 4}	//	unary minus
                 };
 
-        public string ConvertToPostfix(string infixExpr)
+        public static string ConvertToPostfix(string infixExpr)
         {
             string postfixExpr = "";
             Stack<char> operatorsStack = new Stack<char>();
@@ -39,14 +39,14 @@ namespace Calculator.Models
                         postfixExpr += operatorsStack.Pop();
                     operatorsStack.Pop();
                 }
-                else if (operationPriority.ContainsKey(exprChar))
+                else if (OperationPriority.ContainsKey(exprChar))
                 {
                     char operationChar = exprChar;
-                    if (operationChar == '-' && (i == 0 || (i > 1 && operationPriority.ContainsKey(infixExpr[i - 1]))))
+                    if (operationChar == '-' && (i == 0 || (i > 1 && OperationPriority.ContainsKey(infixExpr[i - 1]))))
                     {
                         operationChar = '~';
                     }
-                    while (operatorsStack.Count > 0 && (operationPriority[operatorsStack.Peek()] >= operationPriority[operationChar]))
+                    while (operatorsStack.Count > 0 && (OperationPriority[operatorsStack.Peek()] >= OperationPriority[operationChar]))
                         postfixExpr += operatorsStack.Pop();
                     operatorsStack.Push(operationChar);
                 }
@@ -63,7 +63,7 @@ namespace Calculator.Models
         /// <param name="expression"></param>
         /// <param name="position"></param>
         /// <returns></returns>
-        private string ReceiveStringNumber(string expression, ref int position)
+        public static string ReceiveStringNumber(string expression, ref int position)
         {
             string strNumber = "";
 
