@@ -13,13 +13,12 @@ namespace Calculator.Models
         {'*', 2},
         {'/', 2},
         {'^', 3},
-        {'~', 4}	//	Унарный минус
+        {'~', 4}	//	unary minus
                 };
 
         public string ConvertToPostfix(string infixExpr)
         {
             string postfixExpr = "";
-
             Stack<char> operatorsStack = new Stack<char>();
 
             for (int i = 0; i < infixExpr.Length; i++)
@@ -30,7 +29,7 @@ namespace Calculator.Models
                 {
                     postfixExpr += ReceiveStringNumber(infixExpr, ref i) + " ";
                 }
-                else if (exprChar.Equals(')'))
+                else if (exprChar.Equals('('))
                 {
                     operatorsStack.Push(exprChar);
                 }
@@ -43,16 +42,17 @@ namespace Calculator.Models
                 else if (operationPriority.ContainsKey(exprChar))
                 {
                     char operationChar = exprChar;
-                    if (operationChar == '-'&&(i == 0 || (i>1&& operationPriority.ContainsKey(infixExpr[i-1]))))
+                    if (operationChar == '-' && (i == 0 || (i > 1 && operationPriority.ContainsKey(infixExpr[i - 1]))))
                     {
-                        while (operatorsStack.Count > 0 && (operationPriority[operatorsStack.Peek()]>= operationPriority[operationChar]))
-                            postfixExpr+= operatorsStack.Pop();
-                        operatorsStack.Push(operationChar);
+                        operationChar = '~';
                     }
+                    while (operatorsStack.Count > 0 && (operationPriority[operatorsStack.Peek()] >= operationPriority[operationChar]))
+                        postfixExpr += operatorsStack.Pop();
+                    operatorsStack.Push(operationChar);
                 }
             }
-            foreach(char op in operatorsStack) 
-                postfixExpr+= op;
+            foreach (char op in operatorsStack)
+                postfixExpr += op;
 
             return postfixExpr;
         }
@@ -73,6 +73,7 @@ namespace Calculator.Models
                 if (Char.IsDigit(posChar))
                 {
                     strNumber += posChar;
+                    position++;
                 }
                 else
                 {

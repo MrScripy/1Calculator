@@ -13,7 +13,6 @@ namespace Calculator.Infrastructure.Commands
             this.canExecute = canExecute;
         }
         public override bool CanExecute(object? parameter) => canExecute?.Invoke(parameter) ?? true;
-
         public override void Execute(object? parameter) => execute(parameter);
 
     }
