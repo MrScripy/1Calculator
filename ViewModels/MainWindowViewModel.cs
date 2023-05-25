@@ -1,4 +1,5 @@
 ﻿using Calculator.Infrastructure.Commands;
+using Calculator.Models;
 using Calculator.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Calculator.ViewModels
         private string infixExpr;
         private string exprResult;
         private string postfixExpr;
+        ExpressionConverter expConverter;
         #endregion
         public string ExprResult
         {
@@ -36,7 +38,7 @@ namespace Calculator.ViewModels
         private void OnCountCommandExecuted(object p)
         {
             string? infixExp = p as string;
-
+            PosfixExpr = expConverter.ConvertToPostfix(infixExp);
         }
 
         private bool CanCountCommandExecute(object p)
@@ -51,6 +53,7 @@ namespace Calculator.ViewModels
         public MainWindowViewModel()
         {
             CountCommand = new LambdaCommand(OnCountCommandExecuted, CanCountCommandExecute);
+            expConverter = new ExpressionConverter();
         }
     }
 }
