@@ -15,6 +15,12 @@ namespace Calculator.Models
         {'^', 3},
         {'~', 4}	//	unary minus
                 };
+
+        /// <summary>
+        /// method converts the string infix expression to postfix expression
+        /// </summary>
+        /// <param name="infixExpr"></param>
+        /// <returns></returns>
         public static string ConvertToPostfix(string infixExpr)
         {
             string postfixExpr = "";
@@ -34,22 +40,23 @@ namespace Calculator.Models
                 }
                 else if (exprChar.Equals(')'))
                 {
+                    // put in output string all till opening (
                     while (operatorsStack.Count > 0 && operatorsStack.Peek() != '(')
                         postfixExpr += operatorsStack.Pop();
                     operatorsStack.Pop();
                 }
                 else if (OperationPriority.ContainsKey(exprChar))
                 {
+                    //checking if the operator is unary minus
                     char operationChar = exprChar;
                     if (operationChar == '-' && (i == 0 || (i > 1 && OperationPriority.ContainsKey(infixExpr[i - 1]))))
-                    {
                         operationChar = '~';
-                    }
+
+                    // put all the operators from stack in output string if they have higher priority
                     while (operatorsStack.Count > 0 && (OperationPriority[operatorsStack.Peek()] >= OperationPriority[operationChar]))
                         postfixExpr += operatorsStack.Pop();
                     operatorsStack.Push(operationChar);
                 }
-
             }
             foreach (char op in operatorsStack)
                 postfixExpr += op;
@@ -58,7 +65,7 @@ namespace Calculator.Models
         }
 
         /// <summary>
-        /// Check and return simple numbers
+        /// Check and return numbers
         /// </summary>
         /// <param name="expression"></param>
         /// <param name="position"></param>
@@ -73,6 +80,12 @@ namespace Calculator.Models
                 if (Char.IsDigit(posChar))
                 {
                     strNumber += posChar;
+                    position++;
+                }
+                // checking for non-integers
+                else if (posChar.Equals('.') || posChar.Equals(','))
+                {
+                    strNumber += ',';
                     position++;
                 }
                 else

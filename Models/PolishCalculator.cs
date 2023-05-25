@@ -5,10 +5,14 @@ namespace Calculator.Models
 {
     internal static class PolishCalculator
     {
+        /// <summary>
+        /// take postfix expression and comes back the result of the expression
+        /// </summary>
+        /// <param name="postfixExpr"></param>
+        /// <returns></returns>
         public static double Calculate(string postfixExpr)
         {
             Stack<double> numbersStack = new();
-            int counter = 0;
 
             for (int i = 0; i < postfixExpr.Length; i++)
             {
@@ -21,26 +25,32 @@ namespace Calculator.Models
                 }
                 else if (ExpressionConverter.OperationPriority.ContainsKey(curChar))
                 {
-                    counter += 1;
                     if (curChar == '~')
                     {
+                        // check if stack is empty. if it isn't take number
                         double last = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
-
-                        numbersStack.Push(DoOperation('-', 0, last));
-                        Console.WriteLine($"{counter}) {curChar}{last} = {numbersStack.Peek()}");
+                        // do unary operation
+                        numbersStack.Push(DoOperation('-', 0, last));                        
                         continue;
                     }
 
-                    double second = numbersStack.Count > 0 ? numbersStack.Pop() : 0,
-                    first = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
+                    double second = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
+                    double first = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
 
                     numbersStack.Push(DoOperation(curChar, first, second));
-                    Console.WriteLine($"{counter}) {first} {curChar} {second} = {numbersStack.Peek()}");
                 }
             }
-
             return numbersStack.Pop();
         }
+
+        /// <summary>
+        /// does arithmetic operations
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="firstNum"></param>
+        /// <param name="secondNum"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private static double DoOperation(char op, double firstNum, double secondNum)
         {
             switch (op)
@@ -56,7 +66,7 @@ namespace Calculator.Models
                         throw new Exception("Division by zero is not possible");
                     return firstNum / secondNum;
                 case '^':
-                    return Math.Pow(firstNum, secondNum);
+                    return Math.Pow(firstNum, secondNum);                
                 default:
                     return 0;
             }

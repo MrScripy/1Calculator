@@ -9,12 +9,13 @@ namespace Calculator.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        #region Properties
         #region Fields
         private string infixExpr;
         private string resultExpr;
         private string postfixExpr;
         #endregion
+
+        #region Properties
         public string ResultExpr
         {
             get => resultExpr;
@@ -25,7 +26,6 @@ namespace Calculator.ViewModels
             get => postfixExpr;
             set => Set(ref postfixExpr, value);
         }
-
         #endregion
 
         #region Commands
@@ -52,13 +52,13 @@ namespace Calculator.ViewModels
             if (p as string != string.Empty) return true;
             return false;
         }
-
         #endregion
 
-
+        #region Consrtucters
         public MainWindowViewModel()
         {
             CountCommand = new LambdaCommand(OnCountCommandExecuted, CanCountCommandExecute);
         }
+        #endregion
     }
 }
