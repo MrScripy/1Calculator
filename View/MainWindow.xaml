@@ -1,0 +1,80 @@
+﻿<Window x:Class="Calculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm ="clr-namespace:Calculator.ViewModels"
+        xmlns:cm="clr-namespace:Calculator.Infrastructure.Commands"
+        xmlns:l="clr-namespace:Calculator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <DockPanel Background="#FFB096E4" >
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DockPanel Name ="Top" 
+                       Margin="5" 
+                       Grid.Row="0" 
+                       Grid.Column="0" 
+                       Grid.ColumnSpan="2">
+                <TextBox Name ="ExpressionTextBox"
+                         DockPanel.Dock="Top" 
+                         Margin="5, 20, 5, 5" 
+                         Height="45" Width="550" 
+                         Background="MediumPurple" 
+                         FontSize="14"
+                         />
+                <Button DockPanel.Dock="Bottom" 
+                        Content="Count" 
+                        Height="30" Width="100"
+                        Background="MediumPurple" 
+                        FontSize="14" 
+                        FontFamily="Georgia" 
+                        FontWeight="Bold"
+                        Command="{Binding CountCommand}">
+                    <Button.CommandParameter>
+                        <Binding ElementName="ExpressionTextBox" Path="Text"/>
+                    </Button.CommandParameter>
+                </Button>
+            </DockPanel>
+            <DockPanel Name ="Result" Grid.Row="1" Grid.Column="0">
+                <Label Margin="5" 
+                       DockPanel.Dock="Top" 
+                       Content="Result" 
+                       Height="30" 
+                       Width="100" 
+                       FontSize="14" 
+                       FontFamily="Georgia" 
+                       FontWeight="Bold"/>
+                <TextBlock Margin="25" 
+                           DockPanel.Dock="Bottom" 
+                           Background="MediumPurple"
+                           Text="{Binding Path=ExprResult}"/>
+            </DockPanel>
+            <DockPanel Name ="PolishNotation" Grid.Row="1" Grid.Column="1">
+                <Label Margin="5" 
+                       DockPanel.Dock="Top" 
+                       Content="Reverse Polish notation" 
+                       Height="30" 
+                       Width="200" 
+                       FontSize="14" 
+                       FontFamily="Georgia" 
+                       FontWeight="Bold"/>
+                <TextBlock Margin="25" 
+                           DockPanel.Dock="Bottom" 
+                           Background="MediumPurple"
+                           Text="{Binding Path=PosfixExpr}"/>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>
