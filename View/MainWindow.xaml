@@ -59,7 +59,7 @@
                 <TextBlock Margin="25" 
                            DockPanel.Dock="Bottom" 
                            Background="MediumPurple"
-                           Text="{Binding Path=ExprResult}"/>
+                           Text="{Binding Path=ResultExpr}"/>
             </DockPanel>
             <DockPanel Name ="PolishNotation" Grid.Row="1" Grid.Column="1">
                 <Label Margin="5" 

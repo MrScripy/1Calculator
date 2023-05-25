@@ -1,40 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal static class Calculator
+    internal static class PolishCalculator
     {
         public static double Calculate(string postfixExpr)
         {
-            Stack<double> numbersStack = new Stack<double>();
+            Stack<double> numbersStack = new();
             int counter = 0;
 
             for (int i = 0; i < postfixExpr.Length; i++)
             {
                 char curChar = postfixExpr[i];
-                if(Char.IsDigit(curChar))
+
+                if (Char.IsDigit(curChar))
                 {
-                    string number = ExpressionConverter.ReceiveStringNumber(postfixExpr, ref counter);
+                    string number = ExpressionConverter.ReceiveStringNumber(postfixExpr, ref i);
                     numbersStack.Push(Double.Parse(number));
                 }
                 else if (ExpressionConverter.OperationPriority.ContainsKey(curChar))
                 {
-                    counter++;
-                    if(curChar.Equals('~'))
+                    counter += 1;
+                    if (curChar == '~')
                     {
-                        double last = numbersStack.Count>0 ? numbersStack.Pop() : 0;
+                        double last = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
+
                         numbersStack.Push(DoOperation('-', 0, last));
+                        Console.WriteLine($"{counter}) {curChar}{last} = {numbersStack.Peek()}");
                         continue;
                     }
 
-                    double second = numbersStack.Count > 0? numbersStack.Pop() : 0;
-                    double first = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
+                    double second = numbersStack.Count > 0 ? numbersStack.Pop() : 0,
+                    first = numbersStack.Count > 0 ? numbersStack.Pop() : 0;
 
                     numbersStack.Push(DoOperation(curChar, first, second));
+                    Console.WriteLine($"{counter}) {first} {curChar} {second} = {numbersStack.Peek()}");
                 }
             }
 

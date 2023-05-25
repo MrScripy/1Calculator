@@ -15,7 +15,6 @@ namespace Calculator.Models
         {'^', 3},
         {'~', 4}	//	unary minus
                 };
-
         public static string ConvertToPostfix(string infixExpr)
         {
             string postfixExpr = "";

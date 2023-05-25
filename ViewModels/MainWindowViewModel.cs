@@ -1,11 +1,6 @@
 ﻿using Calculator.Infrastructure.Commands;
 using Calculator.Models;
 using Calculator.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Calculator.ViewModels
@@ -15,13 +10,13 @@ namespace Calculator.ViewModels
         #region Properties
         #region Fields
         private string infixExpr;
-        private string exprResult;
+        private string resultExpr;
         private string postfixExpr;
         #endregion
-        public string ExprResult
+        public string ResultExpr
         {
-            get => exprResult;
-            set => Set(ref exprResult, value);
+            get => resultExpr;
+            set => Set(ref resultExpr, value);
         }
         public string PosfixExpr
         {
@@ -38,6 +33,7 @@ namespace Calculator.ViewModels
         {
             string? infixExp = p as string;
             PosfixExpr = ExpressionConverter.ConvertToPostfix(infixExp);
+            ResultExpr = PolishCalculator.Calculate(PosfixExpr).ToString();
         }
 
         private bool CanCountCommandExecute(object p)
